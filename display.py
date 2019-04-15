@@ -188,7 +188,7 @@ if __name__ == '__main__':
     submit_button.pack()
     classify_button = Button(root, text="分类", command=lambda: main(e.get()))
     classify_button.pack()
-    show_button = Button(root, text="原始鞋印库", command=lambda: show_result(origin.get()))
+    show_button = Button(root, text="原始类别库", command=lambda: show_result(origin.get()))
     show_button.pack()
 
     result_label = Label(root, textvariable=result)
