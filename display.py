@@ -15,16 +15,16 @@ standard_inner_data_path = 'C:\\Users\\Neo\\Desktop\\source_300_train'
 select_path = ''
 
 
-def main():
+def main(path):
     # img_path = 'C:\\Users\\Neo\\Desktop\\source_300\\1_1816\\000042_08c5c668a8254ef688587da9c4f6658c.jpg'
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument('-i', '--image', required=True, help='Image for classification')
-    args = vars(ap.parse_args())
-    img_path = str(args['image'])
+    # ap = argparse.ArgumentParser()
+    # ap.add_argument('-i', '--image', required=True, help='Image for classification')
+    # args = vars(ap.parse_args())
+    # img_path = str(args['image'])
 
-    show_raw_data(img_path)
-    show_4_scale(img_path)
+    show_raw_data(path)
+    show_4_scale(path)
     flag = predict(test)
     # if flag is not False:
     #     show_result(flag)
@@ -35,6 +35,7 @@ def save_path():
     filename = tkinter.filedialog.askopenfilename()
     if filename != '':
         lb.config(text="您选择的文件是：" + filename)
+        main(filename)
     else:
         lb.config(text="您没有选择任何文件")
     return
@@ -169,8 +170,6 @@ if __name__ == '__main__':
     root.geometry('500x80')
     lb = Label(root, text='请选择待测试图像')
     lb.pack()
-
     btn = Button(root, text="选择并分类", command=save_path)
     btn.pack()
     root.mainloop()
-    main()
