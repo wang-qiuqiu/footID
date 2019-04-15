@@ -150,18 +150,27 @@ def predict(img_path):
 
 # 显示预测结果对应文件夹中所有图片
 def show_result(path):
-    resultShow = np.zeros((640, 320))
+    height = 0
+    weight = 0
     _path = os.path.join(root_, path)
+    for pic in os.listdir(_path):
+        pic_path = os.path.join(_path, pic)
+        pic_raw = Image.open(pic_path)
+        pic_array = np.asarray(pic_raw)
+        height = pic_array.shape[0]
+        weight = pic_array.shape[1]
+        break
+    resultShow = np.zeros((height, weight))
     for pic in os.listdir(_path):
         pic_path = os.path.join(_path, pic)
         pic_raw = Image.open(pic_path)
         # 统一尺寸
         pic_array = np.asarray(pic_raw)
-        pic_array = scipy.misc.imresize(pic_array, size=(640, 320))
+        pic_array = scipy.misc.imresize(pic_array, size=(height, weight))
         if len(pic_array.shape) > 2:
             pic_array = pic_array[:, :, 0]
         resultShow = np.hstack([resultShow, pic_array])
-    resultShow = resultShow[:, 320:]
+    resultShow = resultShow[:, weight:]
     cv2.namedWindow('Result')
     cv2.imshow('Result', resultShow)
     cv2.waitKey(0)
