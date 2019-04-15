@@ -145,9 +145,9 @@ def pick_inner():
 
 def main():
     # pick_outlier()
-    pick_inner()
+    # pick_inner()
     # select_outlier()
-    # select_inner()
+    select_inner()
 
 
 if __name__ == '__main__':
