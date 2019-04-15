@@ -2,13 +2,13 @@ from footid1 import *
 from crop_data import crop2top, crop2bottom
 from tkinter import *
 import tkinter.filedialog
-from PIL import Image, ImageTk
+from PIL import Image
 import tensorflow as tf
 import numpy as np
 import cv2
 import os
 
-root = 'C:\\Users\\Neo\\Desktop\\source_test'
+root_ = 'C:\\Users\\Neo\\Desktop\\source_test'
 test = 'test.jpg'
 standard_inner_data_path = 'C:\\Users\\Neo\\Desktop\\source_300_train'
 
@@ -21,6 +21,8 @@ def main(path):
         status.set(1)
         result.set('结果是：'+flag)
         show_result(flag)
+    else:
+        result.set('结果是：集外未知类别')
 
 
 # 从GUI窗口中获取待检测图片路径
@@ -141,18 +143,20 @@ def predict(img_path):
 
 # 显示预测结果对应文件夹中所有图片
 def show_result(path):
-    result = np.zeros((320, 640))
-    show_path = os.path.join(root, path)
-    for pic in os.listdir(show_path):
-        pic_path = os.path.join(show_path, pic)
+    resultShow = np.zeros((128, 64))
+    _path = os.path.join(root_, path)
+    for pic in os.listdir(_path):
+        pic_path = os.path.join(_path, pic)
         pic_raw = Image.open(pic_path)
         # 统一尺寸
-        pic_resize = pic_raw.resize((320, 640))
+        pic_resize = pic_raw.resize((64, 128))
         pic_array = np.asarray(pic_resize)
-        result = np.hstack([result, pic_array])
-    # result = np.array(result)
+        if len(pic_array.shape) > 2:
+            pic_array = cv2.cvtColor(pic_array, cv2.COLOR_RGB2GRAY)
+        resultShow = np.hstack([resultShow, pic_array])
+    resultShow = resultShow[:, 65:]
     cv2.namedWindow('Result')
-    cv2.imshow('Result', result)
+    cv2.imshow('Result', resultShow)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -161,7 +165,6 @@ def show_result(path):
 def chooseFile():
     filename = tkinter.filedialog.askopenfilename(title='选择文件')
     e.set(filename)
-    main(filename)
 
 
 if __name__ == '__main__':
@@ -176,12 +179,14 @@ if __name__ == '__main__':
     result = StringVar()
     status = IntVar()
 
-    result.set('结果是：分类中...')
+    result.set('结果是：')
     e_entry = Entry(root, width=68, textvariable=e)
     e_entry.pack()
 
-    submit_button = Button(root, text="选择并分类", command=chooseFile)
+    submit_button = Button(root, text="选择", command=chooseFile)
     submit_button.pack()
+    classify_button = Button(root, text="分类", command=lambda: main(e.get()))
+    classify_button.pack()
 
     result_label = Label(root, textvariable=result)
     result_label.pack()
