@@ -1,6 +1,7 @@
 from footid1 import *
 from crop_data import crop2top, crop2bottom
 from tkinter import *
+import matplotlib.pyplot as plt
 import tkinter.filedialog
 from PIL import Image
 import tensorflow as tf
@@ -138,7 +139,7 @@ def predict(img_path):
         if source[row, 0] == result_folder:
             target = source[row, 1]
     # 阈值
-    t = float(0.80)
+    t = float(0.90)
     if float(target) < t:
         print('预测为集外')
         return False
@@ -150,37 +151,34 @@ def predict(img_path):
 
 # 显示预测结果对应文件夹中所有图片
 def show_result(path):
-    height = 0
-    weight = 0
     _path = os.path.join(root_, path)
-    for pic in os.listdir(_path):
-        pic_path = os.path.join(_path, pic)
-        pic_raw = Image.open(pic_path)
-        pic_array = np.asarray(pic_raw)
-        height = pic_array.shape[0]
-        weight = pic_array.shape[1]
-        break
-    resultShow = np.zeros((height, weight))
-    for pic in os.listdir(_path):
-        pic_path = os.path.join(_path, pic)
-        pic_raw = Image.open(pic_path)
-        # 统一尺寸
-        pic_array = np.asarray(pic_raw)
-        pic_array = scipy.misc.imresize(pic_array, size=(height, weight))
-        if len(pic_array.shape) > 2:
-            pic_array = pic_array[:, :, 0]
-        resultShow = np.hstack([resultShow, pic_array])
-    resultShow = resultShow[:, weight:]
-    cv2.namedWindow('Result')
-    cv2.imshow('Result', resultShow)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    row = 1
+    column = 0
+    for img in os.listdir(_path):
+        column += 1
+        img_path = os.path.join(_path, img)
+        img_ = Image.open(img_path)
+        plt.subplot(row, len(os.listdir(_path)), column)
+        plt.imshow(img_)
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
 
 
 # 选择测试图片并调用主函数
 def chooseFile():
     filename = tkinter.filedialog.askopenfilename(title='选择文件')
     e.set(filename)
+    rawPath.set(filename)
+
+
+def show_raw(path):
+    img = Image.open(path)
+    plt.figure('Image')
+    plt.imshow(img)
+    plt.axis('off')
+    plt.title('raw')
+    plt.show()
 
 
 if __name__ == '__main__':
@@ -195,19 +193,26 @@ if __name__ == '__main__':
     result = StringVar()
     status = IntVar()
     origin = StringVar()
+    rawPath = StringVar()
 
-    result.set('结果是：')
+    result.set('结果是：待检测')
     e_entry = Entry(root, width=68, textvariable=e)
     e_entry.pack()
 
-    submit_button = Button(root, text="选择", command=chooseFile)
-    submit_button.pack()
-    classify_button = Button(root, text="分类", command=lambda: main(e.get()))
-    classify_button.pack()
-    show_button = Button(root, text="原始类别库", command=lambda: show_result(origin.get()))
-    show_button.pack()
+    fm1 = Frame(root)
+    submit_button = Button(fm1, text="选择", command=chooseFile, bg='yellow')
+    submit_button.pack(side=LEFT)
+    classify_button = Button(fm1, text="分类", command=lambda: main(e.get()), bg='red')
+    classify_button.pack(side=LEFT)
+    show_button = Button(fm1, text="原始类别库", command=lambda: show_result(origin.get()))
+    show_button.pack(side=LEFT)
+    raw_button = Button(fm1, text="显示测试图", command=lambda: show_raw(rawPath.get()), bg='gray')
+    raw_button.pack(side=LEFT)
+    fm1.pack(side=LEFT, padx=10)
 
-    result_label = Label(root, textvariable=result)
+    fm2 = Frame(root)
+    result_label = Label(fm2, textvariable=result, bg='green')
     result_label.pack()
+    fm2.pack(side=RIGHT, padx=10)
 
     root.mainloop()
