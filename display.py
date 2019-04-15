@@ -2,9 +2,8 @@ from footid1 import *
 from crop_data import crop2top, crop2bottom
 from tkinter import *
 import tkinter.filedialog
-from PIL import Image
+from PIL import Image, ImageTk
 import tensorflow as tf
-import argparse
 import numpy as np
 import cv2
 import os
@@ -12,22 +11,16 @@ import os
 root = 'C:\\Users\\Neo\\Desktop\\source_test'
 test = 'test.jpg'
 standard_inner_data_path = 'C:\\Users\\Neo\\Desktop\\source_300_train'
-select_path = ''
 
 
 def main(path):
-    # img_path = 'C:\\Users\\Neo\\Desktop\\source_300\\1_1816\\000042_08c5c668a8254ef688587da9c4f6658c.jpg'
-
-    # ap = argparse.ArgumentParser()
-    # ap.add_argument('-i', '--image', required=True, help='Image for classification')
-    # args = vars(ap.parse_args())
-    # img_path = str(args['image'])
-
     show_raw_data(path)
     show_4_scale(path)
     flag = predict(test)
-    # if flag is not False:
-    #     show_result(flag)
+    if flag is not False:
+        status.set(1)
+        result.set('结果是：'+flag)
+        show_result(flag)
 
 
 # 从GUI窗口中获取待检测图片路径
@@ -164,12 +157,33 @@ def show_result(path):
     cv2.destroyAllWindows()
 
 
+# 选择测试图片并调用主函数
+def chooseFile():
+    filename = tkinter.filedialog.askopenfilename(title='选择文件')
+    e.set(filename)
+    main(filename)
+
+
 if __name__ == '__main__':
     root = Tk()
     root.title('鞋印图像开集分类')
-    root.geometry('500x80')
+
     lb = Label(root, text='请选择待测试图像')
     lb.pack()
-    btn = Button(root, text="选择并分类", command=save_path)
-    btn.pack()
+
+    # 设置变量
+    e = StringVar()
+    result = StringVar()
+    status = IntVar()
+
+    result.set('结果是：分类中...')
+    e_entry = Entry(root, width=68, textvariable=e)
+    e_entry.pack()
+
+    submit_button = Button(root, text="选择并分类", command=chooseFile)
+    submit_button.pack()
+
+    result_label = Label(root, textvariable=result)
+    result_label.pack()
+
     root.mainloop()
