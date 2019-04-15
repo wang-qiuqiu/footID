@@ -31,7 +31,7 @@ def pick_outlier():
 def deleteFolder(target_path):
     if os.path.exists(target_path):
         if len(os.listdir(target_path)) > 0:
-            for file in target_path:
+            for file in os.listdir(target_path):
                 os.remove(os.path.join(target_path, file))
             os.rmdir(target_path)
         else:

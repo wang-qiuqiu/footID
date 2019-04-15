@@ -5,6 +5,8 @@ import tkinter.filedialog
 from PIL import Image
 import tensorflow as tf
 import numpy as np
+from scipy import ndimage
+import scipy
 import cv2
 import os
 
@@ -45,23 +47,28 @@ def show_raw_data(img_path):
     cv2.destroyAllWindows()
 
 
+def resize(img_path):
+    image = np.array(ndimage.imread(img_path, flatten=False))
+    image = scipy.misc.imresize(image, size=(64, 32))
+    return image
+
+
 # 用于展示四个尺度
 def show_4_scale(img_path):
     # 全脚
-    full = Image.open(img_path)
-    full_show = np.asarray(full)
+    full_show = resize(img_path)
     # 脚掌
     top = crop2top(img_path)
-    top_show = top.resize((32, 64))
-    top_show = np.asarray(top_show)
+    top_show = np.asarray(top)
+    top_show = scipy.misc.imresize(top_show, size=(64, 32))
     # 脚跟
     bottom = crop2bottom(img_path)
-    bottom_show = bottom.resize((32, 64))
-    bottom_show = np.asarray(bottom_show)
+    bottom_show = np.asarray(bottom)
+    bottom_show = scipy.misc.imresize(bottom_show, size=(64, 32))
     # 脚掌中心
     center = get_center(top)
-    center_show = center.resize((32, 64))
-    center_show = np.asarray(center_show)
+    center_show = np.asarray(center)
+    center_show = scipy.misc.imresize(center_show, size=(64, 32))
     # 合并后在一个窗口显示
     img_show = np.hstack([full_show, top_show, bottom_show, center_show])
     cv2.namedWindow('Multi-scale')
@@ -143,18 +150,18 @@ def predict(img_path):
 
 # 显示预测结果对应文件夹中所有图片
 def show_result(path):
-    resultShow = np.zeros((320, 160))
+    resultShow = np.zeros((640, 320))
     _path = os.path.join(root_, path)
     for pic in os.listdir(_path):
         pic_path = os.path.join(_path, pic)
         pic_raw = Image.open(pic_path)
         # 统一尺寸
-        pic_resize = pic_raw.resize((160, 320))
-        pic_array = np.asarray(pic_resize)
+        pic_array = np.asarray(pic_raw)
+        pic_array = scipy.misc.imresize(pic_array, size=(640, 320))
         if len(pic_array.shape) > 2:
-            pic_array = cv2.cvtColor(pic_array, cv2.COLOR_RGB2GRAY)
+            pic_array = pic_array[:, :, 0]
         resultShow = np.hstack([resultShow, pic_array])
-    resultShow = resultShow[:, 161:]
+    resultShow = resultShow[:, 320:]
     cv2.namedWindow('Result')
     cv2.imshow('Result', resultShow)
     cv2.waitKey(0)
