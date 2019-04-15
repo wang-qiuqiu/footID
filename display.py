@@ -158,6 +158,8 @@ def show_result(path):
     for img in os.listdir(_path):
         length = len(os.listdir(_path))
         if length < 6:
+            if img == rawName.get():
+                continue
             img_path = os.path.join(_path, img)
             img_ = Image.open(img_path)
             column += 1
@@ -167,6 +169,8 @@ def show_result(path):
             plt.yticks([])
             count += 1
         else:
+            if img == rawName.get():
+                continue
             if count == 6:
                 break
             column += 1
@@ -183,6 +187,8 @@ def show_result(path):
 # 选择测试图片并调用主函数
 def chooseFile():
     filename = tkinter.filedialog.askopenfilename(title='选择文件')
+    names = filename.split('/')
+    rawName.set(names[len(names)-1])
     e.set(filename)
     rawPath.set(filename)
 
@@ -209,6 +215,7 @@ if __name__ == '__main__':
     status = IntVar()
     origin = StringVar()
     rawPath = StringVar()
+    rawName = StringVar()
 
     result.set('结果是：待检测')
     e_entry = Entry(root, width=68, textvariable=e)
