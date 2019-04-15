@@ -20,7 +20,7 @@ def main(path):
     if flag is not False:
         status.set(1)
         result.set('结果是：'+flag)
-        show_result(flag)
+        origin.set(flag)
     else:
         result.set('结果是：集外未知类别')
 
@@ -143,18 +143,18 @@ def predict(img_path):
 
 # 显示预测结果对应文件夹中所有图片
 def show_result(path):
-    resultShow = np.zeros((128, 64))
+    resultShow = np.zeros((320, 160))
     _path = os.path.join(root_, path)
     for pic in os.listdir(_path):
         pic_path = os.path.join(_path, pic)
         pic_raw = Image.open(pic_path)
         # 统一尺寸
-        pic_resize = pic_raw.resize((64, 128))
+        pic_resize = pic_raw.resize((160, 320))
         pic_array = np.asarray(pic_resize)
         if len(pic_array.shape) > 2:
             pic_array = cv2.cvtColor(pic_array, cv2.COLOR_RGB2GRAY)
         resultShow = np.hstack([resultShow, pic_array])
-    resultShow = resultShow[:, 65:]
+    resultShow = resultShow[:, 161:]
     cv2.namedWindow('Result')
     cv2.imshow('Result', resultShow)
     cv2.waitKey(0)
@@ -178,6 +178,7 @@ if __name__ == '__main__':
     e = StringVar()
     result = StringVar()
     status = IntVar()
+    origin = StringVar()
 
     result.set('结果是：')
     e_entry = Entry(root, width=68, textvariable=e)
@@ -187,6 +188,8 @@ if __name__ == '__main__':
     submit_button.pack()
     classify_button = Button(root, text="分类", command=lambda: main(e.get()))
     classify_button.pack()
+    show_button = Button(root, text="原始鞋印库", command=lambda: show_result(origin.get()))
+    show_button.pack()
 
     result_label = Label(root, textvariable=result)
     result_label.pack()
