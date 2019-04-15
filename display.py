@@ -154,14 +154,29 @@ def show_result(path):
     _path = os.path.join(root_, path)
     row = 1
     column = 0
+    count = 0
     for img in os.listdir(_path):
-        column += 1
-        img_path = os.path.join(_path, img)
-        img_ = Image.open(img_path)
-        plt.subplot(row, len(os.listdir(_path)), column)
-        plt.imshow(img_)
-        plt.xticks([])
-        plt.yticks([])
+        length = len(os.listdir(_path))
+        if length < 6:
+            img_path = os.path.join(_path, img)
+            img_ = Image.open(img_path)
+            column += 1
+            plt.subplot(row, length-1, column)
+            plt.imshow(img_)
+            plt.xticks([])
+            plt.yticks([])
+            count += 1
+        else:
+            if count == 6:
+                break
+            column += 1
+            img_path = os.path.join(_path, img)
+            img_ = Image.open(img_path)
+            plt.subplot(row, 6, column)
+            plt.imshow(img_)
+            plt.xticks([])
+            plt.yticks([])
+            count += 1
     plt.show()
 
 
