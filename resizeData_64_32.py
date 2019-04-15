@@ -47,6 +47,6 @@ def resize_save_data_from_img(source, target):
 
 
 if __name__ == '__main__':
-    source_dir = 'C:\\Users\\Neo\\Desktop\\outlier'
-    save_dir = 'C:\\Users\\Neo\\Desktop\\outlier_test'
+    source_dir = 'C:\\Users\\Neo\\Desktop\\source'
+    save_dir = 'C:\\Users\\Neo\\Desktop\\source_display'
     resize_save_data(source_dir, save_dir)
