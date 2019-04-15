@@ -15,6 +15,8 @@ def pick_outlier():
     for folder in os.listdir(std_path):
         std_folder.append(folder)
     for folder in os.listdir(source_path):
+        if count == 500:
+            break
         if folder in std_folder:
             continue
         else:
@@ -48,6 +50,8 @@ def pick_inner():
     deleteFolder(target_path)
 
     for folder in os.listdir(pick_path):
+        if count_all == 500:
+            break
         folder_path = os.path.join(pick_path, folder)
         count = 0
         for pic in os.listdir(folder_path):
