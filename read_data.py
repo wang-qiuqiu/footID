@@ -7,7 +7,7 @@ import scipy
 import cv2
 
 fileDir = 'C:\\Users\\Neo\\Desktop\\source'
-target_dir_root = 'C:\\Users\\Neo\\Desktop\\display'
+target_dir_root = 'C:\\Users\\Neo\\Desktop\\train'
 targets = []
 
 
