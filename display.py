@@ -46,6 +46,12 @@ def show_raw_data(img_path):
     cv2.imshow('RawImage', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    # img = Image.open(img_path)
+    # plt.figure('Image')
+    # plt.imshow(img)
+    # plt.axis('off')
+    # plt.title('Original Shoeprint')
+    # plt.show()
 
 
 def resize(img_path):
@@ -163,7 +169,7 @@ def show_result(path):
             img_path = os.path.join(_path, img)
             img_ = Image.open(img_path)
             column += 1
-            plt.subplot(row, length-1, column)
+            plt.subplot(row, length, column)
             plt.imshow(img_)
             plt.xticks([])
             plt.yticks([])
@@ -198,7 +204,7 @@ def show_raw(path):
     plt.figure('Image')
     plt.imshow(img)
     plt.axis('off')
-    plt.title('raw')
+    plt.title('Original Shoeprint')
     plt.show()
 
 

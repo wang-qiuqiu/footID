@@ -41,7 +41,7 @@ def write2Xls(dir, workbook):
     i = 0
     for file in os.listdir(dir):
         dataNums = statisticDataNum(dir, file)
-        if dataNums > 3 :#and i < 300:
+        if dataNums > 2 :#and i < 300:
             # 将数量为16的图片拷贝到指定目录中去，拷贝50类
             # if dataNums == 16 and i < 50:
             #     temp_dir = os.path.join(dir, file)
