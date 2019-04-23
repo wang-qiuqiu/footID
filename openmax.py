@@ -1,11 +1,3 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-# vim:fenc=utf-8
-#
-# Copyright © 2018 Takuma Yagi <tyagi@iis.u-tokyo.ac.jp>
-#
-# Distributed under terms of the MIT license.
-
 import numpy as np
 import scipy.spatial.distance as spd
 
@@ -26,14 +18,6 @@ def calc_distance(query_score, mcv, eu_weight, distance_type='eucos'):
 
 
 def fit_weibull(means, dists, categories, tailsize=20, distance_type='eucos'):
-    """
-    Input:
-        means (C, channel, C)
-        dists (N_c, channel, C) * C
-    Output:
-        weibull_model : Perform EVT based analysis using tails of distances and save
-                        weibull model parameters for re-adjusting softmax scores
-    """
     weibull_model = {}
     for mean, dist, category_name in zip(means, dists, categories):
         weibull_model[category_name] = {}
@@ -78,10 +62,6 @@ def softmax(x):
 
 
 def openmax(weibull_model, categories, input_score, eu_weight, alpha=10, distance_type='eucos'):
-    """Re-calibrate scores via OpenMax layer
-    Output:
-        openmax probability and softmax probability
-    """
     nb_classes = len(categories)
 
     ranked_list = input_score.argsort().ravel()[::-1][:alpha]

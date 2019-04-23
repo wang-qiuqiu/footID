@@ -47,6 +47,6 @@ def resize_save_data_from_img(source, target):
 
 
 if __name__ == '__main__':
-    source_dir = 'C:\\Users\\Neo\\Desktop\\source'
-    save_dir = 'C:\\Users\\Neo\\Desktop\\source_display'
+    source_dir = 'C:\\Users\\Neo\\Desktop\\1'
+    save_dir = 'C:\\Users\\Neo\\Desktop\\roc_display_inner'
     resize_save_data(source_dir, save_dir)

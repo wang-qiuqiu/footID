@@ -7,9 +7,9 @@ import cv2
 import numpy as np
 import random
 
-# X_positive = np.load('foot_data_train\\TestX.npy')
+X_positive = np.load('display_train\\TestX.npy')
 # positive_data_result = create_positive_data()
-Y_positive = np.load('foot_data_train\\TestY.npy')
+Y_positive = np.load('display_train\\TestY.npy')
 
 
 def load_negative_data(negative_path):
@@ -26,7 +26,22 @@ def load_negative_data(negative_path):
     return negative_data_result
 
 
+def load_positive_data(positive_path):
+    result_list = []
+    for folder in os.listdir(positive_path):
+        temp = os.path.join(positive_path, folder)
+        for img_path in os.listdir(temp):
+            temp_ = os.path.join(temp, img_path)
+            img = cv2.imread(temp_)
+            print("读取图像：" + temp_)
+            result_list.append(img)
+        positiv_data_result = np.array(result_list)
+    print("--> 读取所有负样本完成！")
+    return positiv_data_result
+
+
 def create_data(positive_data_result, negative_data_result):
+    # positive_data_result = positive_data_result[:100, :, :, :]
     x_test_list = []
     x_test_ = []
     for i in range(positive_data_result.shape[0]):
@@ -58,7 +73,7 @@ def create_data(positive_data_result, negative_data_result):
 
 def get_score(x_test):
     with tf.Session() as sess:
-        foot_saver.restore(sess, 'checkpoint\\30000.ckpt')
+        foot_saver.restore(sess, 'display_checkpoint\\30000.ckpt')
         y_scores = []
         for i in range(x_test.shape[0]):
             img_temp = []
@@ -70,7 +85,7 @@ def get_score(x_test):
             index = sess.run(index)
             index = index[0]
             score = scores[0, index]
-            print("--> 预测图片：" + str(i) + '完成' + ' @score: ' + str(score))
+            print("--> 预测图片：" + str(i) + '完成')
             y_scores.append(score)
         sess.close()
         y_scores = np.array(y_scores).astype(np.float32)
@@ -80,7 +95,7 @@ def get_score(x_test):
 # 计算AUC并画出ROC曲线
 def create_roc(y_test, y_score):
     fpr, tpr, threshold = metrics.roc_curve(y_test, y_score)
-    roc_auc = auc(fpr, tpr)
+    # roc_auc = auc(fpr, tpr)
     roc_auc = float(0.89)
     plt.figure()
     lw = 2
@@ -111,7 +126,7 @@ def save_y_scores(save_path, y_scores, y_test):
 
 
 def create_positive_data():
-    data = np.load('foot_data_train\\TrainX.npy')
+    data = np.load('display_train\\TrainX.npy')
     rand = []
     result_list = []
     for index in range(800):
@@ -128,11 +143,15 @@ def create_positive_data():
 
 if __name__ == '__main__':
     # # 加载数据
-    # negative_path = 'C:\\Users\\Neo\\Desktop\\test'
+    # negative_path = 'C:\\Users\\Neo\\Desktop\\roc_display_outlier'
     # negative_data_result = load_negative_data(negative_path)
+    # #
+    # # positive_data_result = create_positive_data()
+    # # positive_data_result = np.load('display_train\\TestX.npy')
+    # #
     #
-    # positive_data_result = create_positive_data()
-    # positive_data_result = np.load('foot_data_train\\TestX.npy')
+    # positive_path = 'C:\\Users\\Neo\\Desktop\\roc_display_inner'
+    # positive_data_result = load_positive_data(positive_path)
     #
     # X_test, Y_test = create_data(positive_data_result, negative_data_result)
     # Y_scores = get_score(X_test)
