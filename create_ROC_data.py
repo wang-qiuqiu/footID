@@ -95,8 +95,7 @@ def get_score(x_test):
 # 计算AUC并画出ROC曲线
 def create_roc(y_test, y_score):
     fpr, tpr, threshold = metrics.roc_curve(y_test, y_score)
-    # roc_auc = auc(fpr, tpr)
-    roc_auc = float(0.89)
+    roc_auc = auc(fpr, tpr)
     plt.figure()
     lw = 2
     plt.figure(figsize=(10, 10))
@@ -143,20 +142,20 @@ def create_positive_data():
 
 if __name__ == '__main__':
     # # 加载数据
-    # negative_path = 'C:\\Users\\Neo\\Desktop\\roc_display_outlier'
-    # negative_data_result = load_negative_data(negative_path)
-    # #
-    # # positive_data_result = create_positive_data()
-    # # positive_data_result = np.load('display_train\\TestX.npy')
-    # #
+    negative_path = 'C:\\Users\\Neo\\Desktop\\roc_display_outlier'
+    negative_data_result = load_negative_data(negative_path)
     #
-    # positive_path = 'C:\\Users\\Neo\\Desktop\\roc_display_inner'
-    # positive_data_result = load_positive_data(positive_path)
+    # positive_data_result = create_positive_data()
+    # positive_data_result = np.load('display_train\\TestX.npy')
     #
-    # X_test, Y_test = create_data(positive_data_result, negative_data_result)
-    # Y_scores = get_score(X_test)
-    # Y_scores_save_path = 'roc_y_scores'
-    # save_y_scores(Y_scores_save_path, Y_scores, Y_test)
+
+    positive_path = 'C:\\Users\\Neo\\Desktop\\roc_display_inner'
+    positive_data_result = load_positive_data(positive_path)
+
+    X_test, Y_test = create_data(positive_data_result, negative_data_result)
+    Y_scores = get_score(X_test)
+    Y_scores_save_path = 'roc_y_scores'
+    save_y_scores(Y_scores_save_path, Y_scores, Y_test)
     y_score = np.load('roc_y_scores\\y_scores.npy')
     y_test = np.load('roc_y_scores\\y_test.npy')
     create_roc(y_test, y_score)
