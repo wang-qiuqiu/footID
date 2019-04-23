@@ -36,7 +36,7 @@ def load_positive_data(positive_path):
             print("读取图像：" + temp_)
             result_list.append(img)
         positiv_data_result = np.array(result_list)
-    print("--> 读取所有负样本完成！")
+    print("--> 读取所有正样本完成！")
     return positiv_data_result
 
 
