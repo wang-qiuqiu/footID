@@ -144,10 +144,6 @@ if __name__ == '__main__':
     # # 加载数据
     negative_path = 'C:\\Users\\Neo\\Desktop\\roc_display_outlier'
     negative_data_result = load_negative_data(negative_path)
-    #
-    # positive_data_result = create_positive_data()
-    # positive_data_result = np.load('display_train\\TestX.npy')
-    #
 
     positive_path = 'C:\\Users\\Neo\\Desktop\\roc_display_inner'
     positive_data_result = load_positive_data(positive_path)
