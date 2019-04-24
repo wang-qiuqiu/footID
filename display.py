@@ -42,6 +42,10 @@ def save_path():
 # 显示输入图像
 def show_raw_data(img_path):
     img = cv2.imread(img_path)
+    if img.shape[0] < 1000:
+        shapeFlag.set(0)
+    else:
+        shapeFlag.set(1)
     cv2.namedWindow('RawImage')
     cv2.imshow('RawImage', img)
     cv2.waitKey(0)
@@ -140,13 +144,18 @@ def predict(img_path):
             target = source[row, 1]
     # 阈值
     t = float(0.90)
+    # print(target)
     if float(target) < t:
         print('预测为集外')
         return False
     else:
-        print('预测为集内')
-        print('预测类别为：' + result_folder)
-        return result_folder
+        if shapeFlag.get() == 0:
+            print('预测为集外')
+            return False
+        else:
+            print('预测为集内')
+            print('预测类别为：' + result_folder)
+            return result_folder
 
 
 # 显示预测结果对应文件夹中所有图片
@@ -216,6 +225,7 @@ if __name__ == '__main__':
     origin = StringVar()
     rawPath = StringVar()
     rawName = StringVar()
+    shapeFlag = IntVar()
 
     result.set('结果是：待检测')
     e_entry = Entry(root, width=68, textvariable=e)
