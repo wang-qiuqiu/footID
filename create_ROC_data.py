@@ -8,7 +8,6 @@ import numpy as np
 import random
 
 X_positive = np.load('display_train\\TestX.npy')
-# positive_data_result = create_positive_data()
 Y_positive = np.load('display_train\\TestY.npy')
 
 
@@ -141,10 +140,10 @@ def create_positive_data():
 
 
 if __name__ == '__main__':
-    # # 加载数据
+    # 加载集外测试图
     negative_path = 'C:\\Users\\Neo\\Desktop\\roc_display_outlier'
     negative_data_result = load_negative_data(negative_path)
-
+    # 加载集内测试图
     positive_path = 'C:\\Users\\Neo\\Desktop\\roc_display_inner'
     positive_data_result = load_positive_data(positive_path)
 
