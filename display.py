@@ -46,12 +46,6 @@ def show_raw_data(img_path):
     cv2.imshow('RawImage', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    # img = Image.open(img_path)
-    # plt.figure('Image')
-    # plt.imshow(img)
-    # plt.axis('off')
-    # plt.title('Original Shoeprint')
-    # plt.show()
 
 
 def resize(img_path):
