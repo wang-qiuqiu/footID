@@ -19,15 +19,15 @@ def draw_hist(count_list):
     x_ = [i for i in range(len(count_list))]
     y_ = count_list
     plt.plot(x_, y_, linewidth=2)
-    plt.title('Distribution of Shoeprint', fontsize=20)
-    plt.xlabel('Classes', fontsize=14)
-    plt.ylabel('Quantity', fontsize=14)
-    plt.tick_params(axis='both', labelsize=14)
+    plt.title('Distribution of Shoeprint', fontsize=10)
+    plt.xlabel('Classes', fontsize=7)
+    plt.ylabel('Quantity', fontsize=7)
+    plt.tick_params(axis='both', labelsize=7)
     plt.show()
 
 
 def main():
-    dir = 'C:\\Users\\Neo\Desktop\\forPaper'
+    dir = 'C:\\Users\\Neo\Desktop\\train'
     list = chap2_2_3(dir)
     return
 

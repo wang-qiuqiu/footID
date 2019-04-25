@@ -42,10 +42,11 @@ def save_path():
 # 显示输入图像
 def show_raw_data(img_path):
     img = cv2.imread(img_path)
-    if img.shape[0] < 1000:
+    if img.shape[0] < 500:
         shapeFlag.set(0)
     else:
         shapeFlag.set(1)
+    print(img.shape)
     cv2.namedWindow('RawImage')
     cv2.imshow('RawImage', img)
     cv2.waitKey(0)
